@@ -24,4 +24,4 @@ main = do
 handleIndex :: ActionT AppM ()
 handleIndex = do
   -- connection <- asks conn
-  text "test"
+  text "hello world"
