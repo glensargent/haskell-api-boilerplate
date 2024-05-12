@@ -67,7 +67,7 @@ executable haskell-api-boilerplate
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base ^>=4.19.1.0, scotty, sqlite-simple, wai-cors, text, mtl
+    build-depends:    base ^>=4.19.1.0, scotty, sqlite-simple, wai-cors, text, mtl, aeson
 
     -- Directories containing source files.
     hs-source-dirs:   app
