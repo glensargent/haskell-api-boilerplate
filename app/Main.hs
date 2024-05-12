@@ -1,13 +1,15 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
 import Control.Monad.Reader
+import Data.Aeson
 import Database.SQLite.Simple as DB
+import GHC.Generics
 import Network.Wai.Middleware.Cors
 import Web.Scotty.Trans
-import Data.Aeson
-import GHC.Generics
+import Data.Text (Text)
 
 data HandlerEnv = HandlerEnv
   { conn :: Connection
@@ -15,13 +17,15 @@ data HandlerEnv = HandlerEnv
 
 type AppM = ReaderT HandlerEnv IO
 
-data User = User {
-  name :: String,
-  age :: Int
-} deriving (Show, Generic)
-instance ToJSON User
-instance FromJSON User
+data User = User
+  { name :: Text,
+    age :: Int
+  }
+  deriving (Show, Generic)
 
+instance ToJSON User
+
+instance FromJSON User
 
 main :: IO ()
 main = do
@@ -42,11 +46,13 @@ handleIndex = do
 handleParamExample :: ActionT AppM ()
 handleParamExample = do
   nameParam <- pathParam "name"
-  text ("hello " <> nameParam)
+  json User {
+    name = nameParam,
+    age = 900
+  }
 
 handlePostExample :: ActionT AppM ()
 handlePostExample = do
   reqBody <- jsonData
   liftIO $ print $ name reqBody
   liftIO $ print $ age reqBody
-
